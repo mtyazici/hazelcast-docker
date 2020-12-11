@@ -2,7 +2,7 @@ name: Build latest OS and EE image
 
 on:
   push:
-    branches: master
+    branches: [ master ]
 
 jobs:
   build:

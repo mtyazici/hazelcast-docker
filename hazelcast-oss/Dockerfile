@@ -1,7 +1,7 @@
 FROM alpine:3.12.1
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=4.1
+ARG HZ_VERSION=4.2-SNAPSHOT
 ARG CACHE_API_VERSION=1.1.1
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
 ARG LOG4J2_VERSION=2.13.3
@@ -10,7 +10,7 @@ ARG LOG4J2_VERSION=2.13.3
 ARG HZ_HOME="/opt/hazelcast"
 
 # JARs to download
-ARG HAZELCAST_ALL_URL="https://repo1.maven.org/maven2/com/hazelcast/hazelcast-all/${HZ_VERSION}/hazelcast-all-${HZ_VERSION}.jar"
+ARG HAZELCAST_ALL_URL="https://oss.sonatype.org/content/repositories/snapshots"
 ARG CACHE_API_URL="https://repo1.maven.org/maven2/javax/cache/cache-api/${CACHE_API_VERSION}/cache-api-${CACHE_API_VERSION}.jar"
 ARG PROMETHEUS_AGENT_URL="https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${JMX_PROMETHEUS_AGENT_VERSION}/jmx_prometheus_javaagent-${JMX_PROMETHEUS_AGENT_VERSION}.jar"
 ARG LOG4J2_URLS="https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-core/${LOG4J2_VERSION}/log4j-core-${LOG4J2_VERSION}.jar https://repo1.maven.org/maven2/org/apache/logging/log4j/log4j-api/${LOG4J2_VERSION}/log4j-api-${LOG4J2_VERSION}.jar"
@@ -40,7 +40,9 @@ RUN echo "Installing new APK packages" \
     && echo "Downloading Hazelcast and related JARs" \
     && mkdir "${HZ_HOME}/lib" \
     && cd "${HZ_HOME}/lib" \
-    && for JAR_URL in ${HAZELCAST_ALL_URL} ${CACHE_API_URL} ${PROMETHEUS_AGENT_URL} ${EUREKA_PLUGIN_URLS} ${LOG4J2_URLS}; do curl -sf -O -L ${JAR_URL} || exit $?; done \
+    && mvn dependency:get -DgroupId=com.hazelcast -DartifactId=hazelcast-all -Dversion=${HZ_VERSION} -Dpackaging=jar -DremoteRepositories=${HAZELCAST_ALL_URL}
+    && cp ~/.m2/repository/com/hazelcast/hazelcast-all/${HZ_VERSION}/hazelcast-all-${HZ_VERSION}.jar ./
+    && for JAR_URL in ${CACHE_API_URL} ${PROMETHEUS_AGENT_URL} ${EUREKA_PLUGIN_URLS} ${LOG4J2_URLS}; do curl -sf -O -L ${JAR_URL} || exit $?; done \
     && mv jmx_prometheus_javaagent-*.jar jmx_prometheus_javaagent.jar \
     && echo "Granting read permission to ${HZ_HOME}" \
     && chmod -R +r ${HZ_HOME} \
