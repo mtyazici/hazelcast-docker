@@ -1,11 +1,11 @@
-name: Build/Push OS and EE 4.0.x image
+name: Build/Push OS and EE 4.1.x image
 
 on:
   push:
     branches:
       - "!*"
     tags:
-      - 'v.4.0.*'
+      - 'v.4.1.*'
 
 jobs:
   build:
