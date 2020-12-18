@@ -1,6 +1,6 @@
 FROM alpine:3.12.2
 
-WORKDIR /tmp/build
+WORKDIR /build
 
 # Versions of Hazelcast Jet and Hazelcast IMDG plugins
 ARG HZ_VERSION=4.1
@@ -13,7 +13,7 @@ ADD dependency-copy.xml /tmp/build/
 
 # Download and install Hazelcast Jet and Hazelcast plugins
 #(hazelcast-eureka, jcache-api) with dependencies
-RUN apk add --no-cache maven 
+RUN apk add --no-cache maven && mvn -version
 
 RUN mvn -f dependency-copy.xml \
     -Dhazelcast-eureka-version=${HZ_EUREKA_VERSION} \
@@ -31,7 +31,7 @@ FROM alpine:3.12.2
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
 
-COPY --from=0 /tmp/build/hazelcast-oss ${HZ_HOME}/
+COPY --from=0 /build/hazelcast-oss ${HZ_HOME}/
 
 # Runtime variables
 ENV HZ_HOME="${HZ_HOME}" \
