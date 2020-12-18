@@ -1,4 +1,4 @@
-FROM maven:3.6-openjdk-11
+FROM alpine:3.12.2
 
 WORKDIR /tmp/build
 
@@ -13,18 +13,19 @@ ADD dependency-copy.xml /tmp/build/
 
 # Download and install Hazelcast Jet and Hazelcast plugins
 #(hazelcast-eureka, jcache-api) with dependencies
-RUN mvn -f dependency-copy.xml \
-      -Dhazelcast-eureka-version=${HZ_EUREKA_VERSION} \
-      -Djmx-prometheus-agent-version=${JMX_PROMETHEUS_AGENT_VERSION} \
-      -Dlog4j2-version=${LOG4J2_VERSION} \
-      -Dhz-version=${HZ_VERSION} \
-      -Djcache-version=${CACHE_API_VERSION} \
-      -Dmaven.wagon.http.retryHandler.count=3 \
-      dependency:copy-dependencies && \
-      mv hazelcast-oss-${HZ_VERSION} hazelcast-oss 
+RUN apk add maven \
+    && mvn -f dependency-copy.xml \
+        -Dhazelcast-eureka-version=${HZ_EUREKA_VERSION} \
+        -Djmx-prometheus-agent-version=${JMX_PROMETHEUS_AGENT_VERSION} \
+        -Dlog4j2-version=${LOG4J2_VERSION} \
+        -Dhz-version=${HZ_VERSION} \
+        -Djcache-version=${CACHE_API_VERSION} \
+        -Dmaven.wagon.http.retryHandler.count=3 \
+        dependency:copy-dependencies && \
+        mv hazelcast-oss-${HZ_VERSION} hazelcast-oss
 
 
-FROM alpine:3.12.1
+FROM alpine:3.12.2
 
 # Build constants
 ARG HZ_HOME="/opt/hazelcast"
