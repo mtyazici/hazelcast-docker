@@ -1,8 +1,11 @@
 name: Build latest OS and EE image
 
 on:
-  push:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      HZ_VERSION:
+        description: 'Version of Hazelcast to build the image for'
+        required: true
 
 jobs:
   build:
@@ -23,13 +26,16 @@ jobs:
 
       - name: Build/Push OSS image
         run: |
-          docker buildx build --push \
-            --tag hazelcast/hazelcast:latest \
+            build --push \
+            --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
+            --tag hazelcast/hazelcast:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-oss
+
       - name: Build/Push EE image
         run: |
           docker buildx build --push \
-            --tag hazelcast/hazelcast-enterprise:latest \
+            --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
+            --tag hazelcast/hazelcast-enterprise:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-enterprise
 
       - name: Scan Hazelcast image by Azure (Trivy + Dockle)
@@ -37,12 +43,14 @@ jobs:
         uses: Azure/container-scan@v0
         with:
           image-name: hazelcast/hazelcast:latest
+
       - name: Scan Hazelcast image by Anchore
         if: always()
         uses: anchore/scan-action@v2.0.2
         with:
           image: hazelcast/hazelcast:latest
           fail-build: true
+
       - name: Scan Hazelcast image by Snyk
         if: always()
         uses: snyk/actions/docker@master
@@ -51,17 +59,20 @@ jobs:
         with:
           image: hazelcast/hazelcast:latest
           args: --file=hazelcast-oss/Dockerfile --policy-path=.github/containerscan
+
       - name: Scan Hazelcast Enterprise image by Azure (Trivy + Dockle)
         if: always()
         uses: Azure/container-scan@v0
         with:
           image-name: hazelcast/hazelcast-enterprise:latest
+
       - name: Scan Hazelcast Enterprise image by Anchore
         if: always()
         uses: anchore/scan-action@v2.0.2
         with:
           image: hazelcast/hazelcast-enterprise:latest
           fail-build: true
+
       - name: Scan Hazelcast Enterprise image by Snyk
         if: always()
         uses: snyk/actions/docker@master
