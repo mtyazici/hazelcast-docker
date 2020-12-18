@@ -13,7 +13,7 @@ ADD dependency-copy.xml /tmp/build/
 
 # Download and install Hazelcast Jet and Hazelcast plugins
 #(hazelcast-eureka, jcache-api) with dependencies
-RUN apk --no-cache add maven 
+RUN apk --no-cache openjdk11-jre add maven 
 
 RUN mvn -f dependency-copy.xml \
     -Dhazelcast-eureka-version=${HZ_EUREKA_VERSION} \
