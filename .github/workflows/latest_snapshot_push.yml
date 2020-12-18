@@ -26,7 +26,7 @@ jobs:
 
       - name: Build/Push OSS image
         run: |
-            build --push \
+          docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
             --tag mtypey/hazelcast:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-oss
