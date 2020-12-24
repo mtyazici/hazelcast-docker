@@ -7,6 +7,7 @@ ARG CACHE_API_VERSION=1.1.1
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
 ARG LOG4J2_VERSION=2.13.3
 ARG HZ_EUREKA_VERSION=2.0.1
+USER root
 
 ADD dependency-copy.xml /build/
 RUN mkdir -p /var/cache/yum/metadata
