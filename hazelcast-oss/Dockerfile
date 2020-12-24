@@ -10,7 +10,7 @@ ARG HZ_EUREKA_VERSION=2.0.1
 
 ADD dependency-copy.xml /build/
 
-RUN apk add --no-cache openjdk8-jre && java -version
+RUN apk add --no-cache openjdk11-jre && java -version
 
 ENV MAVEN_VERSION 3.6.3
 ENV MAVEN_HOME /usr/lib/mvn
