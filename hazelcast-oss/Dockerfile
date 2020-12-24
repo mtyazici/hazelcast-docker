@@ -2,7 +2,6 @@ FROM alpine:3.12.2
 
 WORKDIR /build
 
-# Versions of Hazelcast Jet and Hazelcast IMDG plugins
 ARG HZ_VERSION=4.1
 ARG CACHE_API_VERSION=1.1.1
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
@@ -11,8 +10,6 @@ ARG HZ_EUREKA_VERSION=2.0.1
 
 ADD dependency-copy.xml /build/
 
-# Download and install Hazelcast Jet and Hazelcast plugins
-#(hazelcast-eureka, jcache-api) with dependencies
 RUN apk add --no-cache maven && mvn -version
 
 RUN mvn -f dependency-copy.xml \
@@ -51,7 +48,7 @@ RUN mvn -f dependency-copy.xml \
 # # Install
 # RUN echo "Installing new APK packages" \
 #     && apk add --no-cache openjdk11-jre  \
-#     && cd "${HZ_HOME}/lib" \
+#     && cd "${HZ_HOME}/lib" \]
 #     && echo "Granting read permission to ${HZ_HOME}" \
 #     && chmod -R +r ${HZ_HOME} \
 #     && echo "Setting Pardot ID to 'docker'" \
