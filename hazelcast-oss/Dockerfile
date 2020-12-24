@@ -28,8 +28,8 @@ RUN mvn -f dependency-copy.xml \
     -Dhz-version=${HZ_VERSION} \
     -Djcache-version=${CACHE_API_VERSION} \
     -Dmaven.wagon.http.retryHandler.count=3 \
-    dependency:copy-dependencies && \
-    mv hazelcast-oss-${HZ_VERSION} hazelcast-oss
+    dependency:copy-dependencies  \
+    && mv hazelcast-oss-${HZ_VERSION} hazelcast-oss
 
 
 FROM alpine:3.12.2
