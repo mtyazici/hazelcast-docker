@@ -10,7 +10,7 @@ ARG HZ_EUREKA_VERSION=2.0.1
 
 ADD dependency-copy.xml /build/
 
-RUN microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
+RUN dnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
         --disableplugin=subscription-manager install shadow-utils curl wget tar gzip && java -version
 
 ENV MAVEN_VERSION 3.6.3
