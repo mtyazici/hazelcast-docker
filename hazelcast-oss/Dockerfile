@@ -10,20 +10,20 @@ ARG HZ_EUREKA_VERSION=2.0.1
 
 RUN echo "Installing new packages" \
     && microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
-        --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip
+        --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip maven
 
-ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-headless
-ENV MAVEN_VERSION 3.6.3
-ENV MAVEN_HOME /usr/lib/mvn
-ENV PATH $MAVEN_HOME/bin:$PATH
+# ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-headless
+# ENV MAVEN_VERSION 3.6.3
+# ENV MAVEN_HOME /usr/lib/mvn
+# ENV PATH $MAVEN_HOME/bin:$PATH
 
 
-RUN wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-  tar -zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-  rm apache-maven-$MAVEN_VERSION-bin.tar.gz && \
-  chmod -R 755 apache-maven-$MAVEN_VERSION  && \
-  mv apache-maven-$MAVEN_VERSION /usr/lib/mvn && \
-  mvn -version
+# RUN wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
+#   tar -zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz && \
+#   rm apache-maven-$MAVEN_VERSION-bin.tar.gz && \
+#   chmod -R 755 apache-maven-$MAVEN_VERSION  && \
+#   mv apache-maven-$MAVEN_VERSION /usr/lib/mvn && \
+#   mvn -version
 
 RUN  mvn -f dependency-copy.xml \
     -Dhazelcast-eureka-version=${HZ_EUREKA_VERSION} \
