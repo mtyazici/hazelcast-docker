@@ -22,7 +22,7 @@ script:
   - |
     PROMETHEUS_PORT=8080
     if [ "$HAZELCAST_IMAGE" = "hazelcast-oss" ]; then
-      docker run -it --name ${HAZELCAST_IMAGE}-container -d --rm $HAZELCAST_IMAGE
+      docker run -it --name ${HAZELCAST_IMAGE} -d --rm $HAZELCAST_IMAGE
       sleep 10
       HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${HAZELCAST_IMAGE}-container)
       nc -z $HZ_IP 5701
