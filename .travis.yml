@@ -12,10 +12,10 @@ services:
   - docker
 
 env:
-  - HAZELCAST_IMAGE=hazelcast-oss
+  - HAZELCAST_IMAGE=hazelcast/hazelcast:4.1.1
 
 install:
-  - docker build -t $HAZELCAST_IMAGE $HAZELCAST_IMAGE
+  - docker pull $HAZELCAST_IMAGE
 
 script:
   - docker images
@@ -23,7 +23,7 @@ script:
     PROMETHEUS_PORT=8080
     if [ "$HAZELCAST_IMAGE" = "hazelcast-oss" ]; then
       docker run -it --name ${HAZELCAST_IMAGE}-container -d --rm $HAZELCAST_IMAGE
-      # sleep 10
+      sleep 10
       # HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${HAZELCAST_IMAGE}-container)
       # nc -z $HZ_IP 5701
     fi
