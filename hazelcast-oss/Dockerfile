@@ -58,7 +58,7 @@ COPY *.sh *.yaml *.jar *.properties ${HZ_HOME}/
 
 # Install
 RUN echo "Installing new APK packages" \
-    && apk add --no-cache openjdk11-jre  \
+    && apk add --no-cache openjdk11-jre bash \
     && cd "${HZ_HOME}/lib" \
     && echo "Granting read permission to ${HZ_HOME}" \
     && chmod -R +r ${HZ_HOME} \
@@ -70,7 +70,7 @@ RUN echo "Installing new APK packages" \
 WORKDIR ${HZ_HOME}
 
 RUN addgroup -S hazelcast && adduser -S hazelcast -G hazelcast
-USER root
+USER hazelcast
 
 # Start Hazelcast server
 CMD ["/opt/hazelcast/start-hazelcast.sh"]
