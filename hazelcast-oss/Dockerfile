@@ -9,7 +9,7 @@ ARG LOG4J2_VERSION=2.13.3
 ARG HZ_EUREKA_VERSION=2.0.1
 
 ADD dependency-copy.xml /build/
-
+RUN mkdir -p /var/cache/yum/metadata
 RUN microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
         install shadow-utils curl wget tar gzip && java -version
 
