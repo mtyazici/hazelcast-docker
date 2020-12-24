@@ -8,6 +8,7 @@ ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
 ARG LOG4J2_VERSION=2.13.3
 ARG HZ_EUREKA_VERSION=2.0.1
 
+COPY dependency-copy.xml /build/
 RUN echo "Installing new packages" \
     && microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
         --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip maven
