@@ -11,7 +11,7 @@ ARG HZ_EUREKA_VERSION=2.0.1
 ADD dependency-copy.xml /build/
 
 RUN microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
-        --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget && java -version
+        --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar && java -version
 
 ENV MAVEN_VERSION 3.6.3
 ENV MAVEN_HOME /usr/lib/mvn
