@@ -22,9 +22,9 @@ script:
   - |
     PROMETHEUS_PORT=8080
     if [ "$HAZELCAST_IMAGE" = "hazelcast/hazelcast:4.1.1" ]; then
-      docker run -it --name ${HAZELCAST_IMAGE}-container -d --rm $HAZELCAST_IMAGE
+      docker run -it --name test -d --rm $HAZELCAST_IMAGE
       sleep 10
-      # HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' ${HAZELCAST_IMAGE}-container)
+      # HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}'test)
       # nc -z $HZ_IP 5701
     fi
 
