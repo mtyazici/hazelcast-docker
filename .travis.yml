@@ -15,7 +15,7 @@ env:
   - HAZELCAST_IMAGE=mtypey/hazelcast:latest-snapshot
 
 install:
-  - docker pull $HAZELCAST_IMAGE
+  - docker build . -t $HAZELCAST_IMAGE
 
 script:
   - docker images
