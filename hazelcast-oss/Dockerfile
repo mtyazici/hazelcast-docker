@@ -1,4 +1,4 @@
- FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM alpine:3.12.2
 
 WORKDIR /build
 
@@ -9,15 +9,13 @@ ARG LOG4J2_VERSION=2.13.3
 ARG HZ_EUREKA_VERSION=2.0.1
 
 COPY dependency-copy.xml /build/
-RUN echo "Installing new packages" \
-    && microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
-        --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip maven
 
-# ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-headless
-# ENV MAVEN_VERSION 3.6.3
-# ENV MAVEN_HOME /usr/lib/mvn
-# ENV PATH $MAVEN_HOME/bin:$PATH
 
+# RUN echo "Installing new packages" \
+#     && microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
+#         --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip maven
+
+RUN apk add --no-cache  openjdk11-jre bash curl maven
 
 # RUN wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
 #   tar -zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz && \
