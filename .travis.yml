@@ -15,7 +15,7 @@ env:
   - HAZELCAST_IMAGE=hazelcast/hazelcast:4.1.1
 
 install:
-  - docker pull $HAZELCAST_IMAGE
+  - docker build -t $HAZELCAST_IMAGE $HAZELCAST_IMAGE
 
 script:
   - docker images
@@ -24,8 +24,8 @@ script:
     if [ "$HAZELCAST_IMAGE" = "hazelcast/hazelcast:4.1.1" ]; then
       docker run -it --name test -d --rm $HAZELCAST_IMAGE
       sleep 10
-      # HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}'test)
-      # nc -z $HZ_IP 5701
+      HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}'test)
+      nc -z $HZ_IP 5701
     fi
 
 notifications:

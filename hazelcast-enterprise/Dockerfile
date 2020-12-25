@@ -37,7 +37,7 @@ COPY *.sh *.yaml *.jar *.properties ${HZ_HOME}/
 
 # Install
 RUN echo "Installing new APK packages" \
-    && apk add --no-cache openjdk11-jre bash curl \
+    && apk add --no-cache openjdk11-jre bash curl && mvn -version \
     && echo "Downloading Hazelcast and related JARs" \
     && mkdir "${HZ_HOME}/lib" \
     && cd "${HZ_HOME}/lib" \
