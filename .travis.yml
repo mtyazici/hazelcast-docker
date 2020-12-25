@@ -12,7 +12,7 @@ services:
   - docker
 
 env:
-  - HAZELCAST_IMAGE=mtypey/hazelcast:latest-snapshot
+  - HAZELCAST_IMAGE=hazelcast-oss
 
 install:
   - docker build . -t $HAZELCAST_IMAGE
