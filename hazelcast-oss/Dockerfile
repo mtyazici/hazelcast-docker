@@ -15,7 +15,7 @@ COPY dependency-copy.xml /build/
 #     && microdnf -y --nodocs --disablerepo=* --enablerepo=ubi-8-appstream --enablerepo=ubi-8-baseos \
 #         --disableplugin=subscription-manager install shadow-utils java-11-openjdk-headless curl wget tar gzip maven
 
-RUN apk add --no-cache  openjdk11-jre bash curl maven
+RUN apk add --no-cache  openjdk8-jre bash curl maven
 
 # RUN wget http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
 #   tar -zxvf apache-maven-$MAVEN_VERSION-bin.tar.gz && \
