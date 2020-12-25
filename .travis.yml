@@ -15,7 +15,7 @@ env:
   - HAZELCAST_IMAGE=hazelcast-oss
 
 install:
-  - docker build . -t $HAZELCAST_IMAGE
+  - docker build $HAZELCAST_IMAGE -t $HAZELCAST_IMAGE
 
 script:
   - docker images
