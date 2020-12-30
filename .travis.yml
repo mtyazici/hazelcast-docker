@@ -12,16 +12,16 @@ services:
   - docker
 
 env:
-  - HAZELCAST_IMAGE=hazelcast-oss
+  - HAZELCAST_IMAGE=mtypey/hazelcast:latest-snapshot
 
 install:
-  - docker build $HAZELCAST_IMAGE -t $HAZELCAST_IMAGE
+  - docker pull mtypey/hazelcast:latest-snapshot
 
 script:
   - docker images
   - |
     PROMETHEUS_PORT=8080
-    if [ "$HAZELCAST_IMAGE" = "hazelcast-oss" ]; then
+    if [ "$HAZELCAST_IMAGE" = "mtypey/hazelcast:latest-snapshot" ]; then
       docker run -it --name test -d --rm $HAZELCAST_IMAGE
       sleep 10
       HZ_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' test)
