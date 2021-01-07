@@ -29,14 +29,14 @@ jobs:
         run: |
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
-            --tag hazelcast/hazelcast:latest-snapshot \
+            --tag mtyazici/hazelcast:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-oss 
 
       - name: Build/Push EE image
         run: |
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
-            --tag hazelcast/hazelcast-enterprise:latest-snapshot \
+            --tag mtyazici/hazelcast-enterprise:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-enterprise 
 
       - name: Scan Hazelcast image by Azure (Trivy + Dockle)
