@@ -178,6 +178,7 @@ RUN echo "Installing new APK packages" \
     && echo "Setting Pardot ID to 'docker'" \
     && echo 'hazelcastDownloadId=docker' > "${HZ_HOME}/hazelcast-download.properties" \
     && echo "Cleaning APK packages" \
+    && apk del perl-xml-xpath grep curl
     && rm -rf /var/cache/apk/*
 
 WORKDIR ${HZ_HOME}
