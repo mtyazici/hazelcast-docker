@@ -15,10 +15,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1.0.1
+        uses: docker/setup-qemu-action@v1
 
       - name:  Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1.1.1
+        uses: docker/setup-buildx-action@v1
         with:
           version: v0.5.1
 
@@ -32,53 +32,53 @@ jobs:
             --tag mtyazici/hazelcast:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-oss 
 
-      - name: Build/Push EE image
-        run: |
-          docker buildx build --push \
-            --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
-            --tag mtyazici/hazelcast-enterprise:latest-snapshot \
-            --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-enterprise 
+      # - name: Build/Push EE image
+      #   run: |
+      #     docker buildx build --push \
+      #       --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
+      #       --tag mtyazici/hazelcast-enterprise:latest-snapshot \
+      #       --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-enterprise 
 
-      - name: Scan Hazelcast image by Azure (Trivy + Dockle)
-        if: always()
-        uses: Azure/container-scan@v0
-        with:
-          image-name: hazelcast/hazelcast:latest
+      # - name: Scan Hazelcast image by Azure (Trivy + Dockle)
+      #   if: always()
+      #   uses: Azure/container-scan@v0
+      #   with:
+      #     image-name: hazelcast/hazelcast:latest
 
-      - name: Scan Hazelcast image by Anchore
-        if: always()
-        uses: anchore/scan-action@v2.0.2
-        with:
-          image: hazelcast/hazelcast:latest
-          fail-build: true
+      # - name: Scan Hazelcast image by Anchore
+      #   if: always()
+      #   uses: anchore/scan-action@v2.0.2
+      #   with:
+      #     image: hazelcast/hazelcast:latest
+      #     fail-build: true
 
-      - name: Scan Hazelcast image by Snyk
-        if: always()
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: hazelcast/hazelcast:latest
-          args: --file=hazelcast-oss/Dockerfile --policy-path=.github/containerscan
+      # - name: Scan Hazelcast image by Snyk
+      #   if: always()
+      #   uses: snyk/actions/docker@master
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   with:
+      #     image: hazelcast/hazelcast:latest
+      #     args: --file=hazelcast-oss/Dockerfile --policy-path=.github/containerscan
 
-      - name: Scan Hazelcast Enterprise image by Azure (Trivy + Dockle)
-        if: always()
-        uses: Azure/container-scan@v0
-        with:
-          image-name: hazelcast/hazelcast-enterprise:latest
+      # - name: Scan Hazelcast Enterprise image by Azure (Trivy + Dockle)
+      #   if: always()
+      #   uses: Azure/container-scan@v0
+      #   with:
+      #     image-name: hazelcast/hazelcast-enterprise:latest
 
-      - name: Scan Hazelcast Enterprise image by Anchore
-        if: always()
-        uses: anchore/scan-action@v2.0.2
-        with:
-          image: hazelcast/hazelcast-enterprise:latest
-          fail-build: true
+      # - name: Scan Hazelcast Enterprise image by Anchore
+      #   if: always()
+      #   uses: anchore/scan-action@v2.0.2
+      #   with:
+      #     image: hazelcast/hazelcast-enterprise:latest
+      #     fail-build: true
 
-      - name: Scan Hazelcast Enterprise image by Snyk
-        if: always()
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: hazelcast/hazelcast-enterprise:latest
-          args: --file=hazelcast-enterprise/Dockerfile --policy-path=.github/containerscan
+      # - name: Scan Hazelcast Enterprise image by Snyk
+      #   if: always()
+      #   uses: snyk/actions/docker@master
+      #   env:
+      #     SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      #   with:
+      #     image: hazelcast/hazelcast-enterprise:latest
+      #     args: --file=hazelcast-enterprise/Dockerfile --policy-path=.github/containerscan
