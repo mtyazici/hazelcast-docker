@@ -37,9 +37,9 @@ jobs:
 
       - name: Build/Push OSS image
         run: |
-          TAGS="--tag hazelcast/hazelcast:${{ env.RELEASE_VERSION }}"
+          TAGS="--tag mtypey/hazelcast:${{ env.RELEASE_VERSION }}"
           if [[ "${{ env.PUSH_LATEST }}" == "yes" ]]; then
-            TAGS="${TAGS} --tag hazelcast/hazelcast:latest"
+            TAGS="${TAGS} --tag mtypey/hazelcast:latest"
           fi
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ env.RELEASE_VERSION }} \
