@@ -27,7 +27,7 @@ jobs:
           echo "$(git tag --list "v*" | sort | tail -n 1) <- this tag"
           echo "${GITHUB_REF} <- GITHUB REF"
           echo "${GITHUB_REF} "
-          echo "$(git tag --list "v*")
+          echo "$(git tag --list "v*")"
           echo "PUSH_LATEST=$([[ $(git tag --list "v*" | sort | tail -n 1) = "${GITHUB_REF:10}" ]] && echo yes || echo no)" >> $GITHUB_ENV
 
 
