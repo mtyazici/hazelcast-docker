@@ -1,7 +1,7 @@
 FROM alpine:3.12.3
 
 # Versions of Hazelcast and Hazelcast plugins
-ARG HZ_VERSION=4.0.3
+ARG HZ_VERSION=4.0.2
 ARG CACHE_API_VERSION=1.1.1
 ARG JMX_PROMETHEUS_AGENT_VERSION=0.14.0
 ARG LOG4J2_VERSION=2.13.3
@@ -36,7 +36,7 @@ COPY *.sh *.yaml *.jar *.properties ${HZ_HOME}/
 
 # Install
 RUN echo "Installing new APK packages" \
-    && apk add --no-cache openjdk11-jre bash curl perl-xml-xpath grep \
+    && apk add --no-cache openjdk11-jre bash curl perl-xml-xpath \
     && echo "Downloading Hazelcast and related JARs" \
     && mkdir "${HZ_HOME}/lib" \
     && cd "${HZ_HOME}/lib" \
@@ -48,7 +48,7 @@ RUN echo "Installing new APK packages" \
     && echo "Setting Pardot ID to 'docker'" \
     && echo 'hazelcastDownloadId=docker' > "${HZ_HOME}/hazelcast-download.properties" \
     && echo "Cleaning APK packages" \
-    && apk del perl-xml-xpath grep curl \
+    && apk del perl-xml-xpath curl \
     && rm -rf /var/cache/apk/* ${HZ_HOME}/get-hz-all-url.sh
 
 WORKDIR ${HZ_HOME}
