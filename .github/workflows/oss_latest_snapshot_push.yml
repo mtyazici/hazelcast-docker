@@ -29,20 +29,20 @@ jobs:
         run: |
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
-            --tag hazelcast/hazelcast:latest-snapshot \
+            --tag mtypey/hazelcast:latest-snapshot \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-oss 
 
       - name: Scan Hazelcast image by Azure (Trivy + Dockle)
         if: always()
         uses: Azure/container-scan@v0
         with:
-          image-name: hazelcast/hazelcast:latest
+          image-name: mtypey/hazelcast:latest-snapshot
 
       - name: Scan Hazelcast image by Anchore
         if: always()
         uses: anchore/scan-action@2.0.3
         with:
-          image: hazelcast/hazelcast:latest
+          image: mtypey/hazelcast:latest-snapshot
           fail-build: true
 
       - name: Scan Hazelcast image by Snyk
@@ -51,5 +51,5 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: hazelcast/hazelcast:latest
+          image: hazelcast/hazelcast:latest-snapshot
           args: --file=hazelcast-oss/Dockerfile --policy-path=.github/containerscan
