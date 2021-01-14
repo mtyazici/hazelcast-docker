@@ -1,4 +1,4 @@
-name: Build OSS snapshot image
+name: TEST Build OSS snapshot image
 
 on:
   workflow_dispatch:
