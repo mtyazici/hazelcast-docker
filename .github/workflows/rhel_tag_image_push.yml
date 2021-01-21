@@ -90,7 +90,8 @@ jobs:
 
       - name: Validate Cluster Size
         run: |
-          PROJECT=hz-ee-rhel-release-test-${{ github.run_id }}
+          PROJECT=hz-ee-test-${{ github.run_id }}
+          HZ_NAME=$PROJECT
           NAME=hazelcast-enterprise
           
           source .github/scripts/cluster-verification.sh
