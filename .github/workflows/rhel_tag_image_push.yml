@@ -69,7 +69,7 @@ jobs:
       - name: Deploy Hazelcast Cluster
         run: |
           WORKDIR=$(pwd)/${NAME}
-          PROJECT=hz-ee-rhel-release-test-${{ github.run_id }}
+          PROJECT=hz-ee-test-${{ github.run_id }}
           .github/scripts/smoke-test.sh \
                         "$WORKDIR" \
                         "$PROJECT"  \
@@ -111,7 +111,7 @@ jobs:
       - name: Clean up After Test
         if: always()
         run: |
-          PROJECT=hz-ee-rhel-release-test-${{ github.run_id }}
+          PROJECT=hz-ee-test-${{ github.run_id }}
           .github/scripts/clean-up.sh $PROJECT
 
 
