@@ -71,7 +71,7 @@ jobs:
           WORKDIR=$(pwd)/${NAME}
           PROJECT=hz-ee-rhel-release-test-${{ github.run_id }}
           .github/scripts/smoke-test.sh \
-                        "WORKDIR" \
+                        "$WORKDIR" \
                         "$PROJECT"  \
                         "$OCP_LOGIN_USERNAME"  \
                         "$OCP_LOGIN_PASSWORD" \
@@ -81,7 +81,7 @@ jobs:
                         "$RELEASE_VERSION" \
                         "$CLUSTER_SIZE" \
                         "$HZ_ENTERPRISE_LICENSE" \
-                        "HZ_MC_VERSION"
+                        "$HZ_MC_VERSION"
       
         env:
           CLUSTER_SIZE: 3
