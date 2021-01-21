@@ -114,11 +114,11 @@ jobs:
           .github/scripts/clean-up.sh $PROJECT
 
 
-      - name: Publish the Hazelcast-Enterprise-Operator image
-        run: |
-          PROJECT_ID=$( echo ${HZ_EE_RHEL_REPOSITORY} | grep -m 1 -Po "/\K.+(?=/)" )
-          VERSION=${RELEASE_VERSION}
-          source .github/scripts/publish-rhel.sh
+      # - name: Publish the Hazelcast-Enterprise-Operator image
+      #   run: |
+      #     PROJECT_ID=$( echo ${HZ_EE_RHEL_REPOSITORY} | grep -m 1 -Po "/\K.+(?=/)" )
+      #     VERSION=${RELEASE_VERSION}
+      #     source .github/scripts/publish-rhel.sh
 
-          wait_for_container_build_or_scan $TIMEOUT_IN_MINS
-          publish_the_image
+      #     wait_for_container_build_or_scan $TIMEOUT_IN_MINS
+      #     publish_the_image
