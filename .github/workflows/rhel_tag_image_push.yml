@@ -1,6 +1,11 @@
 name: hz-enterprise-operator-rhel-autorelease
 
 on:
+  workflow_dispatch:
+    inputs:
+      HZ_VERSION:
+        description: 'Version of Hazelcast to build the image for'
+        required: true
   push:
     branches:
       - "!*"
@@ -16,6 +21,7 @@ jobs:
       SCAN_REGISTRY: "scan.connect.redhat.com"
       TIMEOUT_IN_MINS: 120
       HZ_MC_VERSION: 4.2020.12-2
+      HZ_VERSION: ${{ github.event.inputs.HZ_VERSION }}
       HZ_ENTERPRISE_LICENSE: ${{ secrets.HZ_ENTERPRISE_LICENSE }}
       OCP_LOGIN_USERNAME: ${{ secrets.OCP_LOGIN_USERNAME }}
       OCP_LOGIN_PASSWORD: ${{ secrets.OCP_LOGIN_PASSWORD }}
@@ -33,7 +39,7 @@ jobs:
 
       - name: Set Release version and Rhel image as environment variables
         run: |
-          RELEASE_VERSION=${GITHUB_REF:11}
+          RELEASE_VERSION=${HZ_VERSION}
           echo "RHEL_IMAGE=${HZ_EE_RHEL_REPOSITORY}:${RELEASE_VERSION}" >> $GITHUB_ENV
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_ENV
 
@@ -41,7 +47,7 @@ jobs:
       - name: Build the Hazelcast Enterprise image
         run: |
           docker build \
-                --build-arg HZ_VERSION=${RELEASE_VERSION} \
+                --build-arg HZ_VERSION=4.1.1 \
                 --tag ${RHEL_IMAGE} hazelcast-enterprise
 
 
