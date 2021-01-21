@@ -90,11 +90,3 @@ publish_the_image()
         fi
     fi
 }
-
-
- curl --silent \
-                 --header "Content-Type: application/json" \
-                 --request POST \
-                 --header "Authorization: Bearer ${RHEL_API_KEY}" \
-                 --data "{\"tag\":\"${VERSION}\"}" \
-                 "https://connect.redhat.com/api/v2/projects/${PROJECT_ID}/build" 
