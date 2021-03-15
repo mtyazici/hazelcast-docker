@@ -30,9 +30,9 @@ jobs:
 
       - name: Build/Push OSS image
         run: |
-          TAGS="--tag mtypeyhazelcast:${{ github.event.inputs.HZ_VERSION }}"
+          TAGS="--tag mtypey/hazelcast:${{ github.event.inputs.HZ_VERSION }}"
           if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
-            TAGS="${TAGS} --tag mtypeyhazelcast:latest-snapshot"
+            TAGS="${TAGS} --tag mtypey/hazelcast:latest-snapshot"
           fi
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
