@@ -30,9 +30,9 @@ jobs:
 
       - name: Build/Push EE image
         run: |
-          TAGS="--tag hazelcast/hazelcast-enterprise:${{ github.event.inputs.HZ_VERSION }}"
+          TAGS="--tag mtypeyhazelcast-enterprise:${{ github.event.inputs.HZ_VERSION }}"
           if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
-            TAGS="${TAGS} --tag hazelcast/hazelcast-enterprise:latest-snapshot"
+            TAGS="${TAGS} --tag mtypeyhazelcast-enterprise:latest-snapshot"
           fi
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
@@ -40,33 +40,3 @@ jobs:
             $TAGS \
             --platform=linux/arm64,linux/amd64,linux/ppc64le,linux/s390x hazelcast-enterprise
 
-      - name: Trigger Helm Chart Snapshot Action
-        if: github.ref == 'refs/heads/master'
-        run: |
-          curl  -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GH_API_TOKEN }} " \
-            https://api.github.com/repos/hazelcast/charts/actions/workflows/push-hazelcast-enterprise-snapshot.yml/dispatches \
-            -d '{"ref":"master"}'
-
-      - name: Scan Hazelcast Enterprise image by Azure (Trivy + Dockle)
-        if: always()
-        uses: Azure/container-scan@v0
-        with:
-          image-name: hazelcast/hazelcast-enterprise:${{ github.event.inputs.HZ_VERSION }}
-
-      - name: Scan Hazelcast Enterprise image by Anchore
-        if: always()
-        uses: anchore/scan-action@v2.0.4
-        with:
-          image: hazelcast/hazelcast-enterprise:${{ github.event.inputs.HZ_VERSION }}
-          fail-build: true
-
-      - name: Scan Hazelcast Enterprise image by Snyk
-        if: always()
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: hazelcast/hazelcast-enterprise:${{ github.event.inputs.HZ_VERSION }}
-          args: --file=hazelcast-enterprise/Dockerfile --policy-path=.github/containerscan
