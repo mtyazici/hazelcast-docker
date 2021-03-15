@@ -30,9 +30,9 @@ jobs:
 
       - name: Build/Push OSS image
         run: |
-          TAGS="--tag hazelcast/hazelcast:${{ github.event.inputs.HZ_VERSION }}"
+          TAGS="--tag mtypey/hazelcast:${{ github.event.inputs.HZ_VERSION }}"
           if [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
-            TAGS="${TAGS} --tag hazelcast/hazelcast:latest-snapshot"
+            TAGS="${TAGS} --tag mtypey/hazelcast:latest-snapshot"
           fi
           docker buildx build --push \
             --build-arg HZ_VERSION=${{ github.event.inputs.HZ_VERSION }} \
@@ -48,25 +48,3 @@ jobs:
             -H "Authorization: token ${{ secrets.GH_API_TOKEN }} " \
             https://api.github.com/repos/hazelcast/charts/actions/workflows/push-hazelcast-snapshot.yml/dispatches \
             -d '{"ref":"master"}'
-
-      - name: Scan Hazelcast image by Azure (Trivy + Dockle)
-        if: always()
-        uses: Azure/container-scan@v0
-        with:
-          image-name: hazelcast/hazelcast:latest-snapshot
-
-      - name: Scan Hazelcast image by Anchore
-        if: always()
-        uses: anchore/scan-action@v2.0.4
-        with:
-          image: hazelcast/hazelcast:latest-snapshot
-          fail-build: true
-
-      - name: Scan Hazelcast image by Snyk
-        if: always()
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: hazelcast/hazelcast:latest-snapshot
-          args: --file=hazelcast-oss/Dockerfile --policy-path=.github/containerscan
